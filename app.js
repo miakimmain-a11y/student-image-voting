@@ -12,6 +12,10 @@
   const notice = document.querySelector("#notice");
   const sortSelect = document.querySelector("#sortSelect");
   const refreshButton = document.querySelector("#refreshButton");
+  const imageViewer = document.querySelector("#imageViewer");
+  const viewerImage = document.querySelector("#viewerImage");
+  const viewerTitle = document.querySelector("#viewerTitle");
+  const viewerClose = document.querySelector("#viewerClose");
 
   let db = null;
   let images = [];
@@ -96,11 +100,18 @@
 
       const wrap = document.createElement("div");
       wrap.className = "image-wrap";
+      const fullImageUrl = publicImageUrl(item.image_path);
+      const openImage = document.createElement("button");
+      openImage.type = "button";
+      openImage.className = "image-open-button";
+      openImage.setAttribute("aria-label", `View full image: ${item.title}`);
       const img = document.createElement("img");
-      img.src = publicImageUrl(item.image_path);
+      img.src = fullImageUrl;
       img.alt = item.title;
       img.loading = "lazy";
-      wrap.append(img);
+      openImage.append(img);
+      openImage.addEventListener("click", () => openViewer(fullImageUrl, item.title));
+      wrap.append(openImage);
 
       const rank = document.createElement("span");
       rank.className = "rank";
@@ -138,6 +149,26 @@
       card.append(wrap, content);
       gallery.append(card);
     });
+  }
+
+  function openViewer(src, title) {
+    viewerImage.src = src;
+    viewerImage.alt = title;
+    viewerTitle.textContent = title;
+    if (typeof imageViewer.showModal === "function") {
+      imageViewer.showModal();
+    } else {
+      imageViewer.setAttribute("open", "");
+    }
+  }
+
+  function closeViewer() {
+    if (typeof imageViewer.close === "function" && imageViewer.open) {
+      imageViewer.close();
+    } else {
+      imageViewer.removeAttribute("open");
+    }
+    viewerImage.removeAttribute("src");
   }
 
   function publicImageUrl(path) {
@@ -252,6 +283,11 @@
   }
 
   imageInput.addEventListener("change", event => uploadFiles(event.target.files));
+  viewerClose.addEventListener("click", closeViewer);
+  imageViewer.addEventListener("click", event => {
+    if (event.target === imageViewer) closeViewer();
+  });
+  imageViewer.addEventListener("close", () => viewerImage.removeAttribute("src"));
   refreshButton.addEventListener("click", loadImages);
   sortSelect.addEventListener("change", render);
 
