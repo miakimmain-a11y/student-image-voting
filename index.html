@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7fb">
+  <title>Class Image Voting</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="eyebrow">CLASS IMAGE VOTE</p>
+      <h1>Vote for Your Favorite Images</h1>
+      <p class="subtitle">Upload images and vote for as many of your favorites as you like.</p>
+    </header>
+
+    <section class="upload-panel">
+      <div class="upload-copy">
+        <h2>Upload Images</h2>
+        <p>Everyone can upload images. Up to 5 images at a time, with a 5 MB limit per image.</p>
+      </div>
+      <label class="upload-button" for="imageInput">＋ Choose Images</label>
+      <input id="imageInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+      <p id="uploadStatus" class="status full-width" role="status"></p>
+    </section>
+
+    <section class="controls">
+      <div>
+        <h2>Image Gallery</h2>
+        <p id="summary" class="muted">Loading images…</p>
+      </div>
+      <div class="control-buttons">
+        <select id="sortSelect" aria-label="Sort images">
+          <option value="newest">Newest First</option>
+          <option value="votes">Most Votes</option>
+          <option value="oldest">Oldest First</option>
+        </select>
+        <button id="refreshButton" class="button secondary" type="button">Refresh</button>
+      </div>
+    </section>
+
+    <div id="notice" class="notice" role="status" hidden></div>
+    <section id="gallery" class="gallery" aria-live="polite"></section>
+    <section id="emptyState" class="empty-state" hidden>
+      <div class="empty-icon">＋</div>
+      <h2>Be the First to Upload an Image</h2>
+      <p>Choose images above to add them to the class voting gallery.</p>
+    </section>
+
+    <footer>
+      <p>You can participate without signing in. Votes are stored in a shared database, and repeat voting is not restricted.</p>
+      <p>Image links are public. Please do not upload personal, sensitive, or private photos.</p>
+    </footer>
+  </main>
+</body>
+</html>
